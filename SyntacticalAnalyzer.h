@@ -21,6 +21,7 @@ class SyntacticalAnalyzer
 	SyntacticalAnalyzer (char * filename);
 	~SyntacticalAnalyzer ();
     private:
+    ofstream p2;
 	LexicalAnalyzer * lex;
 	token_type token;
 	int program ();

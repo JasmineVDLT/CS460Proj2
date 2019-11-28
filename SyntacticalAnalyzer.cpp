@@ -18,6 +18,9 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
 	lex = new LexicalAnalyzer (filename);
 	token_type t;
 	int totalErrors = program ();
+	string temp = filename;
+	temp = temp.substr(0, temp.size() - 3);
+	p2.open(temp + ".p2");
 }
 
 SyntacticalAnalyzer::~SyntacticalAnalyzer ()
@@ -148,7 +151,7 @@ int SyntacticalAnalyzer::action ()
 	int errors = 0;
 	if(token == IF_T){
     		p2 << "Using Rule 24\n";
-    		token = lex->GetToken()
+    		token = lex->GetToken();
     		errors += stmt();
     		errors += stmt();
     		errors += else_part();
@@ -162,7 +165,7 @@ int SyntacticalAnalyzer::action ()
       			errors += stmt_pair_body();
     		}
     		else{
-      			erros++;
+      			errors++;
       			lex->ReportError("Error, missing (");
       			token = lex->GetToken();
     		}
@@ -193,7 +196,7 @@ int SyntacticalAnalyzer::action ()
     		token = lex->GetToken();
     		errors += stmt();
   	}
-  	else if(token == NUMBER_T){
+  	else if(token == NUMBERP_T){
     		p2 << "Using Rule 31\n";
     		token = lex->GetToken();
     		errors += stmt();
@@ -233,7 +236,7 @@ int SyntacticalAnalyzer::action ()
     		p2 << "Using Rule 38\n";
     		token = lex->GetToken();
     		errors += stmt();
-    		errors += stmt_list():
+    		errors += stmt_list();
   	}
   	else if(token == MULT_T){
     		p2 << "Using Rule 39\n";
