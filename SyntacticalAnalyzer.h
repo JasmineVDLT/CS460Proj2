@@ -20,6 +20,7 @@ class SyntacticalAnalyzer
     public:
 	SyntacticalAnalyzer (char * filename);
 	~SyntacticalAnalyzer ();
+	int parse_file();
     private:
     ofstream p2;
 	LexicalAnalyzer * lex;

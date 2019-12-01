@@ -21,6 +21,7 @@ int main (int argc, char * argv[])
 	}
 	SetLimits ();
 	SyntacticalAnalyzer parse (argv[1]);
+	int errors = parse.parse_file();
 
 	return 0;
 }
