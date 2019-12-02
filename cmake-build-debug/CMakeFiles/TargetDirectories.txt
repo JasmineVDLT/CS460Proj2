@@ -1,3 +1,0 @@
-C:/Users/User/Desktop/Proj2/cmake-build-debug/CMakeFiles/CS460Proj2.dir
-C:/Users/User/Desktop/Proj2/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/User/Desktop/Proj2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,6 +1,0 @@
-Input file: test.ss
-   1: ( define (square x)
-   2: 	 (* x x))
-   3: 
-   4: (square 7)
-0 errors found in input file
