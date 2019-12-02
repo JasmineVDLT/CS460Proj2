@@ -1,0 +1,23 @@
+Input file: test.ss
+   1: ( define (square x)
+	LPAREN_T        (
+	DEFINE_T        define
+	LPAREN_T        (
+	IDENT_T         square
+	IDENT_T         x
+	RPAREN_T        )
+   2: 	 (* x x))
+	LPAREN_T        (
+	MULT_T          *
+	IDENT_T         x
+	IDENT_T         x
+	RPAREN_T        )
+	RPAREN_T        )
+   3: 
+   4: (square 7)
+	LPAREN_T        (
+	IDENT_T         square
+	NUMLIT_T        7
+	RPAREN_T        )
+	EOF_T           
+0 errors found in input file

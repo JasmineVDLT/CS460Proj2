@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/User/Desktop/Proj2/LexicalAnalyzer.h
+iostream
+-
+fstream
+-
+map
+-
+
+C:/Users/User/Desktop/Proj2/Project2.cpp
+cstdlib
+-
+iostream
+-
+iomanip
+-
+SetLimits.h
+C:/Users/User/Desktop/Proj2/SetLimits.h
+SyntacticalAnalyzer.h
+C:/Users/User/Desktop/Proj2/SyntacticalAnalyzer.h
+
+C:/Users/User/Desktop/Proj2/SetLimits.h
+
+C:/Users/User/Desktop/Proj2/SyntacticalAnalyzer.h
+iostream
+-
+fstream
+-
+LexicalAnalyzer.h
+C:/Users/User/Desktop/Proj2/LexicalAnalyzer.h
+
