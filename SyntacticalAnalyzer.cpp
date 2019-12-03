@@ -31,6 +31,8 @@ SyntacticalAnalyzer::~SyntacticalAnalyzer ()
 
 int SyntacticalAnalyzer::program ()
 {
+	p2 << "Entering Program function; current token is: " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
 	int errors = 0;
 	if(token == LPAREN_T) {
 		token = lex->GetToken();
@@ -38,7 +40,7 @@ int SyntacticalAnalyzer::program ()
 	}
 	else{
 		errors++;
-		lex->ReportError("Error something missing\n");
+		lex->ReportError("'(' expected\n");
 	}
 	errors += define();
 	if(token == LPAREN_T) {
@@ -46,7 +48,7 @@ int SyntacticalAnalyzer::program ()
 		p2 << "Using Rule 1" << endl;
 	} else{
 		errors++;
-		lex->ReportError("Error something missing\n");
+		lex->ReportError("'(' expected\n");
 	}
 	errors += more_defines();
 	if(token == EOF_T) {
@@ -55,15 +57,20 @@ int SyntacticalAnalyzer::program ()
 	}
 	else{
 		errors++;
-		lex->ReportError("Error something missing\n");
+		lex->ReportError("'(' expected\n");
 	}
 	p2.close();
+
+	p2 << "Exiting Program function; current token is:  " << lex->GetTokenName(token) << endl;
 	return errors;
 }
 
 int SyntacticalAnalyzer::more_defines ()
 {
 	int errors = 0;
+	p2 << "Entering More_Defines function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
+
 	if(token == DEFINE_T) {
 		token = lex->GetToken();
 		p2 << "Using Rule 2" << endl;
@@ -75,7 +82,7 @@ int SyntacticalAnalyzer::more_defines ()
 		}
 		else {
 		errors++;
-		lex->ReportError("Error something missing\n");
+		lex->ReportError("'(' expected\n");
 		}
 		errors += more_defines();
 	}
@@ -89,20 +96,24 @@ int SyntacticalAnalyzer::more_defines ()
 		}
 		else {
 			errors++;
-			lex->ReportError("Error something missing\n");
+			lex->ReportError("')' expected\n");
 		}
 	}
 	else {
 		errors++;
-		lex->ReportError("Error something missing\n");
+		lex->ReportError("IDENT or DEFINE expected\n");
 	}
 
+	p2 << "Exiting More_Defines function; current token is:  " << lex->GetTokenName(token) << endl;
 	return errors;
 }
 
 int SyntacticalAnalyzer::define ()
 {
 	int errors = 0;
+	p2 << "Entering Define function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
+
 	if(token == DEFINE_T)
 	{
 		p2 << "Using Rule 4" << endl;
@@ -110,7 +121,7 @@ int SyntacticalAnalyzer::define ()
 	} else
 	{
 		errors++;
-		lex->ReportError("Error something missing\n");
+		lex->ReportError("DEFINE expected\n");
 	}
 	if(token == LPAREN_T)
 	{
@@ -119,7 +130,7 @@ int SyntacticalAnalyzer::define ()
 	}
 	else {
 		errors++;
-		lex->ReportError("Error something missing\n");
+		lex->ReportError("')' expected\n");
 	}
 	if(token == IDENT_T)
 	{
@@ -127,7 +138,7 @@ int SyntacticalAnalyzer::define ()
 		token = lex->GetToken();
 	} else {
 		errors++;
-		lex->ReportError("Error something missing\n");
+		lex->ReportError("IDENT expected\n");
 	}
 	errors += param_list();
 
@@ -139,7 +150,7 @@ int SyntacticalAnalyzer::define ()
 	} else
 	{
 		errors++;
-		lex->ReportError("Error something missing\n");
+		lex->ReportError("')' expected\n");
 	}
 
 	errors += stmt();
@@ -150,17 +161,20 @@ int SyntacticalAnalyzer::define ()
 	{
 		p2 << "Using Rule 4" << endl;
 		token = lex->GetToken();
-		return errors;
 	} else{
 		errors++;
-		lex->ReportError("Error something missing\n");
-		return errors;
+		lex->ReportError("')' expected\n");
 	}
+	p2 << "Exiting More_Defines function; current token is:  " << lex->GetTokenName(token) << endl;
+	return errors;
 
 }
 
 int SyntacticalAnalyzer::stmt_list () {
 	int errors = 0;
+	p2 << "Entering Stmt_List function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
+
 
 	if(token == IDENT_T || token == LPAREN_T || token == NUMLIT_T
 		|| token == STRLIT_T || token == SQUOTE_T)
@@ -168,16 +182,21 @@ int SyntacticalAnalyzer::stmt_list () {
 		errors += stmt();
 		errors += stmt_list();
 	}
+	p2 << "Exiting Stmt_List function; current token is:  " << lex->GetTokenName(token) << endl;
+
 	return errors;
 }
 
 int SyntacticalAnalyzer::stmt ()
 {
 	int errors = 0;
+	p2 << "Entering Stmt function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
 
 	if(token == IDENT_T) {
 		p2 << "Using Rule 8" << endl;
 		token = lex->GetToken();
+		p2 << "Exiting Stmt function; current token is:  " << lex->GetTokenName(token) << endl;
 		return errors;
 	}
 	else if(token == LPAREN_T) {
@@ -187,26 +206,33 @@ int SyntacticalAnalyzer::stmt ()
 		if(token == RPAREN_T) {
 			p2 << "Using Rule 8" << endl;
 			token = lex->GetToken();
+		p2 << "Exiting Stmt function; current token is:  " << lex->GetTokenName(token) << endl;
 			return errors;
 		}
-	}
+	}	 
 
 	errors += literal();
+	p2 << "Exiting Stmt function; current token is:  " << lex->GetTokenName(token) << endl;
 	return errors;
 }
 
 int SyntacticalAnalyzer::literal ()
 {
 	int errors = 0;
+	p2 << "Entering Literal function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
+
 	if(token == NUMLIT_T) {
 		p2 << "Using Rule 10" << endl;
 		token = lex->GetToken();
-		return errors;
+		p2 << "Exiting Literal function; current token is:  " << lex->GetTokenName(token) << endl;
+	return errors;
 	}
 	else if(token == STRLIT_T) {
 		p2 << "Using Rule 11" << endl;
 		token = lex->GetToken();
-		return errors;
+		p2 << "Exiting Literal function; current token is:  " << lex->GetTokenName(token) << endl;
+	return errors;
 	}
 	else if(token == SQUOTE_T)
 	{
@@ -214,12 +240,20 @@ int SyntacticalAnalyzer::literal ()
 		token = lex->GetToken();
 		errors += quoted_lit();
 	}
+	else
+	{
+		errors++;
+		lex->ReportError("NUMLIT, STRLIT, or SQUOTE expected\n");
+	}
+	p2 << "Exiting Literal function; current token is:  " << lex->GetTokenName(token) << endl;
 	return errors;
 }
 
 int SyntacticalAnalyzer::quoted_lit ()
 {
 	int errors = 0;
+	p2 << "Entering Quoted_Lit function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
 	if(token == LPAREN_T || token == IDENT_T || token == NUMLIT_T || token == STRLIT_T || token == LISTOP2_T || token == IF_T || token == DISPLAY_T || token == NEWLINE_T
      		|| token == LISTOP1_T || token == AND_T || token == OR_T || token == NOT_T || token == DEFINE_T || token == NUMBERP_T || token == LISTP_T || token == ZEROP_T
      		|| token == NULLP_T || token == STRINGP_T || token == PLUS_T || token == MINUS_T || token == DIV_T || token == MULT_T || token == MODULO_T || token == ROUND_T
@@ -229,16 +263,20 @@ int SyntacticalAnalyzer::quoted_lit ()
   	}
   	else{
     		errors++;
-    		lex->ReportError("Error, missing something");
+    		lex->ReportError("Expeceted token not found\n");
     		token = lex->GetToken();
   	}
 
+	p2 << "Exiting Quoted_Lit function; current token is:  " << lex->GetTokenName(token) << endl;
 	return errors;
 }
 
 int SyntacticalAnalyzer::more_tokens ()
 {
 	int errors = 0;
+	p2 << "Entering More_Tokens function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
+
 	if(token == LPAREN_T || token == IDENT_T || token == NUMLIT_T || token == STRLIT_T || token == LISTOP2_T || token == IF_T || token == DISPLAY_T || token == NEWLINE_T
      		|| token == LISTOP1_T || token == AND_T || token == OR_T || token == NOT_T || token == DEFINE_T || token == NUMBERP_T || token == LISTP_T || token == ZEROP_T
      		|| token == NULLP_T || token == STRINGP_T || token == PLUS_T || token == MINUS_T || token == DIV_T || token == MULT_T || token == MODULO_T || token == ROUND_T
@@ -253,16 +291,20 @@ int SyntacticalAnalyzer::more_tokens ()
   	}
   	else{
     		errors++;
-    		lex->ReportError("Error, missing something");
+    		lex->ReportError("Expected token not found\n");
     		token = lex->GetToken();
   	}
 
+	p2 << "Exiting More_Tokens function; current token is:  " << lex->GetTokenName(token) << endl;	
 	return errors;
 }
 
 int SyntacticalAnalyzer::param_list ()
 {
 	int errors = 0;
+	p2 << "Entering Param_List function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
+
 	if(token == IDENT_T){
     		p2 << "Using Rule 16\n";
     		token = lex->GetToken();
@@ -274,35 +316,40 @@ int SyntacticalAnalyzer::param_list ()
   	}
   	else{
     		errors++;
-    		lex->ReportError("Error, missing identifier");
+    		lex->ReportError("IDENT, '(' or ')' expeceted\n");
     		token = lex->GetToken();
   	}
 
+	p2 << "Exiting Param_List function; current token is:  " << lex->GetTokenName(token) << endl;	
 	return errors;
 }
 
 int SyntacticalAnalyzer::else_part ()
 {
 	int errors = 0;
+	p2 << "Entering Else_Part function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
 	if(token == RPAREN_T || token == IDENT_T || token == LPAREN_T
 		|| token == NUMLIT_T || token == STRLIT_T || token == SQUOTE_T)
 	{
 		token = lex->GetToken();
 		p2 << "Using Rule 24" << endl;
-		return errors;
 	}
 	else {
 		token = lex->GetToken();
 		errors += stmt();
 	}
 
-
+	p2 << "Exiting Else_Part function; current token is:  " << lex->GetTokenName(token) << endl;	
 	return errors;
 }
 
 int SyntacticalAnalyzer::stmt_pair ()
 {
 	int errors = 0;
+	p2 << "Entering Stmt_Pair function; current token is:  " << lex->GetTokenName(token)
+		<< ", lexeme: " << lex->GetLexeme() << endl;
+
 	if(token == LPAREN_T)
 	{
 		token = lex->GetToken();
@@ -315,12 +362,16 @@ int SyntacticalAnalyzer::stmt_pair ()
 		token = lex->GetToken();
 		p2 << "Using Rule 21" << endl;
 	}
+	p2 << "Exiting Stmt_Pair function; current token is:  " << lex->GetTokenName(token) << endl;	
 	return errors;
 }
 
 int SyntacticalAnalyzer::stmt_pair_body ()
 {
 	int errors = 0;
+	p2 << "Entering Stmt_Pair_Body function; current token is:  " << lex->GetTokenName(token)
+	<< ", lexeme: " << lex->GetLexeme() << endl;
+
 	if(token == ELSE_T)
 	{
 		token = lex->GetToken();
@@ -342,14 +393,21 @@ int SyntacticalAnalyzer::stmt_pair_body ()
 			p2 << "Using Rule 22" << endl;
 			token = lex->GetToken();
 		}
+		else
+		{
+			errors++;
+			lex->ReportError("')' expected\n");
+		}
 	}
-
+	p2 << "Exiting Stmt_Pair_Body function; current token is:  " << lex->GetTokenName(token) << endl;	
 	return errors;
 }
 
 int SyntacticalAnalyzer::action ()
 {
 	int errors = 0;
+	p2 << "Entering Action function; current token is:  " << lex->GetTokenName(token)
+	<< ", lexeme: " << lex->GetLexeme() << endl;
 	if(token == IF_T){
     		p2 << "Using Rule 24\n";
     		token = lex->GetToken();
@@ -367,7 +425,7 @@ int SyntacticalAnalyzer::action ()
     		}
     		else{
       			errors++;
-      			lex->ReportError("Error, missing (");
+      			lex->ReportError("')' expected\n");
       			token = lex->GetToken();
     		}
   	}
@@ -496,16 +554,19 @@ int SyntacticalAnalyzer::action ()
   	}
   	else{
     		errors++;
-    		lex->ReportError("Error, missing somthing");
+    		lex->ReportError("Required token not found\n");
     		token = lex->GetToken();
   	}
 
+	p2 << "Exiting Action function; current token is:  " << lex->GetTokenName(token) << endl;	
 	return errors;
 }
 
 int SyntacticalAnalyzer::any_other_token ()
 {
 	int errors = 0;
+	p2 << "Entering Any_Other_Token function; current token is:  " << lex->GetTokenName(token)
+	<< ", lexeme: " << lex->GetLexeme() << endl;
 	if(token == LPAREN_T)
 	{
 		p2 << "Using Rule 50" << endl;
@@ -514,6 +575,7 @@ int SyntacticalAnalyzer::any_other_token ()
 		if(token == RPAREN_T)
 		{
 			token = lex->GetToken();
+			p2 << "Exiting Any_Other_Token function; current token is:  " << lex->GetTokenName(token) << endl;	
 			return errors;
 		}
 	}
@@ -672,7 +734,12 @@ int SyntacticalAnalyzer::any_other_token ()
 		p2 << "Using Rule 81" << endl;
 		token = lex->GetToken();
 	}
-
+	else
+	{
+		errors++;
+		lex->ReportError("Required token not found\n");
+	}
+	p2 << "Exiting Any_Other_Token function; current token is:  " << lex->GetTokenName(token) << endl;	
 	return errors;
 }
 
